@@ -12,6 +12,7 @@ kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic first_kafka
 kafka-topics.sh --bootstrap-server localhost:9092 --alter --topic first_kafka_topic --partitions 10
 kafka-topics.sh --bootstrap-server localhost:9092 --describe --topic first_kafka_topic
 
+python3 monitor.py kafka 60
 
 
 
@@ -27,3 +28,5 @@ docker exec -it trusting_wozniak /bin/bash
 bin/pulsar-admin topics create-partitioned-topic persistent://public/default/my-topic-1 --partitions 5
 bin/pulsar-admin topics update-partitioned-topic persistent://public/default/my-topic-1 --partitions 10
 bin/pulsar-admin topics partitioned-stats persistent://public/default/my-topic-1
+
+python3 monitor.py beautiful_perlman 60
