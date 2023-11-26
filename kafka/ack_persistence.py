@@ -17,18 +17,19 @@ def produce_messages(acks, linger_ms):
         linger_ms=linger_ms
     )
 
-    start_time = time.time()
+    start_time = time.perf_counter_ns()
     for i in range(100):
         message = f'Message {i}'.encode('utf-8')
         producer.send('first_kafka_topic', value=message)
 
     producer.flush()
-    end_time = time.time()
+    end_time = time.perf_counter_ns()
     producer.close()
 
-    print(f"Acks: {acks}, Linger ms: {linger_ms}, Time taken: {end_time - start_time:.2f} seconds")
+    time_diff_ns = end_time - start_time
+    print(f"Acks: {acks}, Linger ms: {linger_ms}, Time taken: {time_diff_ns} nanoseconds")
 
 # Example usage
 produce_messages(acks='all', linger_ms=5)
-produce_messages(acks='1', linger_ms=5)
-produce_messages(acks='0', linger_ms=5)
+produce_messages(acks=1, linger_ms=5)
+produce_messages(acks=0, linger_ms=5)

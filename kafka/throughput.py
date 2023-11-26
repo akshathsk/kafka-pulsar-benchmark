@@ -14,7 +14,6 @@ def generate_random_string(size):
     return ''.join(random.choice(string.ascii_letters) for _ in range(size))
 
 def produce_messages(payload_size):
-    print(f"Producing {BATCH_SIZE} messages of size: {payload_size} bytes...")
     start_time = time.time()
     for _ in range(BATCH_SIZE):
         random_message = generate_random_string(payload_size)
@@ -23,7 +22,7 @@ def produce_messages(payload_size):
             'timestamp': time.time()
         }
         message_bytes = json.dumps(message_payload).encode('utf-8')
-        producer.send('first_kafka_topic', value=message_bytes)
+        producer.send('first_kafka_topic_11', value=message_bytes)
     producer.flush()
     end_time = time.time()
     return end_time - start_time
@@ -35,25 +34,23 @@ def safe_json_deserializer(m):
         print("Failed to decode message: ", m)
         return None
 
-consumer = KafkaConsumer('first_kafka_topic',
+consumer = KafkaConsumer('first_kafka_topic_11',
                          bootstrap_servers='localhost:9092',
                          auto_offset_reset='earliest',
                          value_deserializer=safe_json_deserializer)
 
 def consume_messages():
-    print(f"Consuming {BATCH_SIZE} messages...")
     consumed_count = 0
     start_time = time.time()
     while consumed_count < BATCH_SIZE:
         raw_msgs = consumer.poll(timeout_ms=10000)
         for _, messages in raw_msgs.items():
             consumed_count += len(messages)
-            print(f"Consumed {consumed_count} messages so far...")
     end_time = time.time()
     return end_time - start_time
 
 def main():
-    payload_sizes = [10, 100, 1000, 10_000, 100_000]
+    payload_sizes = [1000]
 
     for size in payload_sizes:
         produce_time = produce_messages(size)

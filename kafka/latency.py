@@ -24,10 +24,10 @@ def produce_message(payload_size):
     # Convert the message payload to a byte string
     message_bytes = json.dumps(message_payload).encode('utf-8')
 
-    future = producer.send('first_kafka_topic', value=message_bytes)
+    future = producer.send('first_kafka_topic_10', value=message_bytes)
     result = future.get(timeout=10)  # wait for max 10 seconds
 
-    # producer.send('first_kafka_topic', value=message_bytes)
+    # producer.send('first_kafka_topic_10', value=message_bytes)
     producer.flush()
 
 # Handle deserialization errors gracefully
@@ -39,7 +39,7 @@ def safe_json_deserializer(m):
         return None
 
 # Initialize Kafka consumer
-consumer = KafkaConsumer('first_kafka_topic',
+consumer = KafkaConsumer('first_kafka_topic_10',
                          bootstrap_servers='localhost:9092',
                          auto_offset_reset='earliest',
                          value_deserializer=safe_json_deserializer)
@@ -56,7 +56,7 @@ def consume_messages():
 
 def main():
     # List of varying payload sizes to test
-    payload_sizes = [10, 100, 1000, 10_000, 100_000]
+    payload_sizes = [100_000]
 
     for size in payload_sizes:
         # print(f"Sending message of size: {size} bytes...")

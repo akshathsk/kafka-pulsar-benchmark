@@ -14,7 +14,6 @@ def generate_random_string(size):
     return ''.join(random.choice(string.ascii_letters) for _ in range(size))
 
 def produce_messages(payload_size):
-    print(f"Producing {BATCH_SIZE} messages of size: {payload_size} bytes...")
     start_time = time.time()
     for _ in range(BATCH_SIZE):
         random_message = generate_random_string(payload_size)
@@ -37,7 +36,6 @@ def safe_json_deserializer(m):
 consumer = client.subscribe('my-topic-1', subscription_name='my-sub')
 
 def consume_messages():
-    print(f"Consuming {BATCH_SIZE} messages...")
     consumed_count = 0
     start_time = time.time()
     while consumed_count < BATCH_SIZE:
@@ -50,7 +48,7 @@ def consume_messages():
     return end_time - start_time
 
 def main():
-    payload_sizes = [10, 100, 1000, 10_000, 100_000]
+    payload_sizes = [10_000]
 
     for size in payload_sizes:
         produce_time = produce_messages(size)

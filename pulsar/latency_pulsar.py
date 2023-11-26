@@ -6,7 +6,7 @@ import random
 
 # Initialize Pulsar client and producer
 client = pulsar.Client('pulsar://localhost:6650')
-producer = client.create_producer('my-topic-1')
+producer = client.create_producer('my-topic-2')
 
 def generate_random_string(size):
     """Generate a random string of given size."""
@@ -36,7 +36,7 @@ def safe_json_deserializer(m):
         return None
 
 # Initialize Pulsar consumer
-consumer = client.subscribe('my-topic-1', subscription_name='my-sub')
+consumer = client.subscribe('my-topic-2', subscription_name='my-sub')
 
 def consume_messages():
     msg = consumer.receive(timeout_millis=5000)
@@ -50,7 +50,7 @@ def consume_messages():
 
 def main():
     # List of varying payload sizes to test
-    payload_sizes = [10, 100, 1000, 10_000, 100_000]
+    payload_sizes = [10, 100, 1000, 10_000]
 
     for size in payload_sizes:
         produce_message(size)
